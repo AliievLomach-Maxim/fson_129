@@ -1,144 +1,72 @@
+import SearchForm from '../SearchForm/SearchForm'
 import { useState } from 'react'
-import Counter from '../Counter/Counter'
-import TotalValue from '../TotalValue/TotalValue'
-
-interface CounterState {
-  a: number
-  b: number
-  c: number
-}
+import ArticleList from '../ArticleList/ArticleList'
+import { searchArticles } from '../../services/api'
+import type { Article } from '../../services/types'
 
 const App = () => {
-  const [counter, setCounter] = useState<CounterState>({ a: 0, b: 0, c: 0 })
-  // const [value,sv] = useState<number>(0)
-  // const handleClickA = () => {
-  //   setCounter({ ...counter, a: counter.a + 1 })
-  // }
-  // const handleClickB = () => {
-  //   setCounter({ ...counter, b: counter.b + 1 })
-  // }
-  // const handleClickC = () => {
-  //   setCounter({ ...counter, c: counter.c + 1 })
-  // }
-  const handleClick = (key: keyof CounterState) => {
-    setCounter({ ...counter, [key]: counter[key] + 1 })
+  const [hits, setHits] = useState<Article[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState(false)
+
+  const handleSearch = async (query: string) => {
+    try {
+      setError(false)
+      setHits([])
+
+      setIsLoading(true)
+      const data = await searchArticles(query)
+      setHits(data)
+    } catch {
+      setError(true)
+    } finally {
+      setIsLoading(false)
+    }
   }
-
-  const total = counter.a + counter.b + counter.c
-
-  console.log('counter', counter)
   return (
     <div>
-      <Counter updateFn={() => handleClick('a')} value={counter.a} />
+      <SearchForm handleSearch={handleSearch} isLoading={isLoading} />
       <hr />
-      <Counter updateFn={() => handleClick('b')} value={counter.b} />
-      <hr />
-      <Counter updateFn={() => handleClick('c')} value={counter.c} />
-      <hr />
-      <h2>Total: {total}</h2>
-      {/* <TotalValue obj={counter} /> */}
-      {/* <button onClick={handleClick}>Counter : {counter}</button>
-      <button onClick={handleClick}>Counter : {counter}</button> */}
+      {isLoading && <h2>Loading...</h2>}
+      {error && <h2>Oops... Some error. Pls reload the page</h2>}
+      {hits.length > 0 && <ArticleList articles={hits} />}
+      {/* <ArticleList articles={hits} /> */}
     </div>
   )
 }
 
 export default App
 
-// const handleClick = (customValue: number) => {
-//   console.log(customValue + 2)
-// }
-// const button = document.querySelector('button')
-// button.addEvent('click', (event)=>handleClick(1))
+// import { useId } from 'react'
+// import CustomForm from '../CustomForm/CustomForm'
 
-// import { useState } from 'react'
-// // let v = true
 // const App = () => {
-//   const [value, setValue] = useState(true)
+//   // const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
+//   //   e.preventDefault()
+//   //   const form = e.currentTarget
+//   //   const formData = new FormData(form)
 
-//   const handleClick = () => {
-//     setValue(!value)
-//   }
+//   //   const username = formData.get('username') as string
+//   //   const username2 = formData.get('username2') as string
+
+//   //   const data = {
+//   //     username,
+//   //     username2,
+//   //   }
+//   //   console.log('data', data)
+//   //   // console.log(form.elements.username.value)
+//   //   // console.log(e)
+
+//   //   form.reset()
+//   // }
 
 //   return (
 //     <div>
-//       <button onClick={handleClick}>Toggle</button>
-//       <hr />
-//       {value && <p>Hello!!</p>}
+//       <CustomForm />
+//       <h2>Label for someth...</h2>
+//       <CustomForm />
+//       <CustomForm />
 //     </div>
 //   )
 // }
-
 // export default App
-
-// import { useState } from 'react'
-
-// // hook > useSomth...
-// // const [value, fn] = useState() > let counterValue;
-// // const [value, fn] = useState(0) > let counterValue = 0
-// const App = () => {
-//   const [counterValue, setCounterValue] = useState(0)
-//   const handleCounter = () => {
-//     // counterValue = counterValue + 1
-//     setCounterValue(counterValue + 1) // counterValue = 1
-//     // setCounterValue(counterValue + 1) // counterValue = 1
-//     // setCounterValue(counterValue + 1) // counterValue = 1
-//     console.log('counterValue', counterValue) // 0
-//   }
-//   console.log('counterValue', counterValue) // 0 > 1
-
-//   return (
-//     <div>
-//       <button onClick={handleCounter}> Counter {counterValue}</button>
-//     </div>
-//   )
-// }
-
-// export default App
-
-// const App = () => {
-//   // ts..
-//   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-//     console.log(event)
-//   }
-//   return (
-//     <div>
-//       <button onClick={handleClick}>Click me...</button>
-//       <button
-//         onClick={(event) => {
-//           console.log(event)
-//         }}
-//       >
-//         Click me...
-//       </button>
-
-//       <input
-//         type='text'
-//         onChange={(e) => {
-//           console.log('e from input', e)
-//         }}
-//       />
-//     </div>
-//   )
-// }
-
-// export default App
-
-// // 'input'
-// // const button = document.querySelector('')
-// // const handleClick = (event) => {}
-// // button.addEvent('click', (event) => {})
-// // button.addEvent('click', handleClick)
-
-// const someFn2 = () => {
-//   const b = 2
-// }
-
-// const someFn = () => {
-//   someFn2()
-//   console.log(2 + b)
-// }
-
-// let user = { name: 'Alex', age: 42 }
-// user = { ...user, name: 'Bob' }
-// user > { name: 'Bob', age: 42 }
