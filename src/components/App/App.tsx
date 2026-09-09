@@ -1,72 +1,75 @@
-import SearchForm from '../SearchForm/SearchForm'
 import { useState } from 'react'
-import ArticleList from '../ArticleList/ArticleList'
-import { searchArticles } from '../../services/api'
-import type { Article } from '../../services/types'
+import Sidebar from '../Sidebar/Sidebar'
 
 const App = () => {
-  const [hits, setHits] = useState<Article[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(false)
+  const [isShowSidebar, setIsShowSidebar] = useState(false)
 
-  const handleSearch = async (query: string) => {
-    try {
-      setError(false)
-      setHits([])
+  const showSidebar = () => setIsShowSidebar(true)
+  const hideSidebar = () => setIsShowSidebar(false)
 
-      setIsLoading(true)
-      const data = await searchArticles(query)
-      setHits(data)
-    } catch {
-      setError(true)
-    } finally {
-      setIsLoading(false)
-    }
-  }
   return (
     <div>
-      <SearchForm handleSearch={handleSearch} isLoading={isLoading} />
-      <hr />
-      {isLoading && <h2>Loading...</h2>}
-      {error && <h2>Oops... Some error. Pls reload the page</h2>}
-      {hits.length > 0 && <ArticleList articles={hits} />}
-      {/* <ArticleList articles={hits} /> */}
+      <h1>My super site</h1>
+      <button onClick={showSidebar}>open</button>
+      {isShowSidebar && <Sidebar onClose={hideSidebar} />}
     </div>
   )
 }
 
 export default App
 
-// import { useId } from 'react'
-// import CustomForm from '../CustomForm/CustomForm'
+// import { useState } from 'react'
+// import Timer from '../Timer/Timer'
 
 // const App = () => {
-//   // const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-//   //   e.preventDefault()
-//   //   const form = e.currentTarget
-//   //   const formData = new FormData(form)
-
-//   //   const username = formData.get('username') as string
-//   //   const username2 = formData.get('username2') as string
-
-//   //   const data = {
-//   //     username,
-//   //     username2,
-//   //   }
-//   //   console.log('data', data)
-//   //   // console.log(form.elements.username.value)
-//   //   // console.log(e)
-
-//   //   form.reset()
-//   // }
-
+//   const [isShow, setIsShow] = useState(false)
 //   return (
 //     <div>
-//       <CustomForm />
-//       <h2>Label for someth...</h2>
-//       <CustomForm />
-//       <CustomForm />
+//       <button onClick={() => setIsShow(!isShow)}>{isShow ? 'Hide' : 'Show'}</button>
+//       {isShow && <Timer />}
 //     </div>
 //   )
 // }
+
 // export default App
+// import { useEffect, useState } from 'react'
+// import { searchArticles } from '../../services/api'
+
+// const App = () => {
+//   const [counter, setCounter] = useState(0)
+//   const [articles, setArticles] = useState([])
+
+//   // setCounter(counter + 1)
+//   //
+
+//   useEffect(() => {
+//     // console.log('useEffect')
+//     // searchArticles('css').then((res) => setArticles(res))
+//     async function fetchData() {
+//       // You can await here
+//       const response = await searchArticles('css')
+//       setArticles(response)
+//       // ...
+//     }
+//     fetchData()
+//   }, [])
+//   // if(firstRender === true){callback()}else{return}
+
+//   // if(prevcounter !== counter){callback()}else{return}
+//   // useEffect(() => {
+//   //   console.log('counter', counter)
+//   // }, [counter])
+
+//   // console.log('render App')
+
+//   return (
+//     <div>
+//       <button onClick={() => setCounter(counter + 1)}>{counter}</button>
+//       <pre>{JSON.stringify(articles, null, 2)}</pre>
+//     </div>
+//   )
+// }
+
+// export default App
+
+// // App() > setCounter(counter + 1) > re-render (App()) > setCounter(counter + 1)> re-render...
