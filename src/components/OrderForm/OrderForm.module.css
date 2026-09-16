@@ -68,8 +68,22 @@
   color: #fff;
   cursor: pointer;
   transition: background-color 0.2s ease-in-out;
+  &:disabled {
+    background-color: gray;
+    cursor: not-allowed;
+    &:hover {
+      background-color: gray;
+    }
+  }
 }
 
 .button:hover {
   background-color: #0056b3;
+}
+
+.error {
+  color: red;
+}
+.errorField {
+  border-color: red;
 }
