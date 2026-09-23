@@ -1,25 +1,9 @@
-# Заняття 9 - Мутації з TanStack Query
+# Заняття 10 - Контрольовані елементи
 
-## CRUD
-
-- Postman
-- https://64689aefe99f0ba0a8286f54.mockapi.io/tasks
-
-## Мутації
-
-- Видалення завдання
-- Хук `useMutation`
-  - mutationFn
-  - onSuccess
-  - onError
-- Функція `mutate`
-
-## Інвалідація кеша
-
-- Хук `useQueryClient`
-- Метод `invalidateQueries`
-
-## Практика
-
-- Створення завдання через форму в модальному вікні
-- Редагування завдання. Зміна стану completed через чекбокс
+- Контрольовані елементи
+  - Атрибути `value` та `onChange`
+- Компонент `SearchBox`
+- Відкладений пошук з [use-debounce](https://www.npmjs.com/package/use-debounce)
+  - Хук `useDebouncedCallback`
+- Відкладений пошук з React Query
+- Власні хуки
